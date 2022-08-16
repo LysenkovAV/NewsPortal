@@ -1,0 +1,19 @@
+<!-- Наследование от шаблона default.html -->
+{% extends 'flatpages/default.html' %}
+
+<!-- Подключение фильтров -->
+{% load custom_filters %}
+
+<!-- Название -->
+{% block title %}
+Post
+{% endblock title %}
+
+<!-- Выводим пост, идентификатор которого был передан в url -->
+{% block content %}
+    <h1>{{ post.title|censor }}</h1>
+    <hr>
+    <h3>Date of publication: {{ post.time_add|date:'d M Y' }}</h3>
+    <hr>
+    <h3>{{ post.text|censor }}</h3>
+{% endblock content %}

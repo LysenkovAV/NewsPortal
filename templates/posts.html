@@ -1,0 +1,40 @@
+<!-- Наследование от шаблона default.html -->
+{% extends 'flatpages/default.html' %}
+
+<!-- Подключение фильтров -->
+{% load custom_filters %}
+
+<!-- Название -->
+{% block title %}
+News and articles
+{% endblock title %}
+
+<!-- Все посты в порядке от самого свежего до самого старого -->
+{% block content %}
+    <h1>All news and articles</h1>
+    <!-- Количество постов и переменная с датой, переданная из представления. Вывод в указанном формате -->
+    <h3>The number of posts is {{ posts|length }} (Current date: {{ time_now|date:'d M Y' }}) </h3>
+    <!-- Фильтр с текстом по умолчанию, если переменная None
+    <h3>{{ next_post|default_if_none:"We will text about new post later!" }}</h3> -->
+    <hr>
+    {% if posts %} <!-- Выводим посты только если они есть -->
+        <table cellpadding="10" align="center">
+            <tr>
+                <td>TITLE</td>
+                <td>DATE</td>
+                <td>PREVIEW</td>
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title|censor }}</td>
+                <td>{{ post.time_add|date:'d M Y' }}</td>
+                <!-- Количество выводимых слов статьи ограничено -->
+                <td>{{ post.text|censor|truncatechars:20 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <!-- Если постов нет, то выводим соответствующее сообщение -->
+        <h2>There are no posts!</h2>
+    {% endif %}
+{% endblock content %}

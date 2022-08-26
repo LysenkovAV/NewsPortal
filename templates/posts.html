@@ -3,6 +3,8 @@
 
 <!-- Подключение фильтров -->
 {% load custom_filters %}
+<!-- Подключение тегов -->
+{% load custom_tags %}
 
 <!-- Название -->
 {% block title %}
@@ -16,6 +18,15 @@ News and articles
     <h3>The number of posts is {{ posts|length }} (Current date: {{ time_now|date:'d M Y' }}) </h3>
     <!-- Фильтр с текстом по умолчанию, если переменная None
     <h3>{{ next_post|default_if_none:"We will text about new post later!" }}</h3> -->
+
+    <!-- Форма объединяет набор полей, которые отправляются в запросе -->
+    <form action="" method="get">
+        <!-- Переменная, переданная через контекст, генерирует форму с полями -->
+        {{ filterset.form.as_p }}
+        <!-- Кнопка для отправки данных формы -->
+        <input type="submit" value="Search" />
+    </form>
+
     <hr>
     {% if posts %} <!-- Выводим посты только если они есть -->
         <table cellpadding="10" align="center">
@@ -37,4 +48,28 @@ News and articles
         <!-- Если постов нет, то выводим соответствующее сообщение -->
         <h2>There are no posts!</h2>
     {% endif %}
+
+    <!-- Добавление пагинации на странице -->
+
+    <!-- Информация о предыдущих страницах -->
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}" >1</a>
+        {% if page_obj.previous_page_number != 1 %}
+        ...
+        <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    <!-- Информация о текущей странице -->
+    {{ page_obj.number }}
+
+    <!-- Информация о следующих страницах -->
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
 {% endblock content %}

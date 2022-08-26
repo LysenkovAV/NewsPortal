@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Author(models.Model):  # класс авторов постов
@@ -49,8 +50,8 @@ class Post(models.Model):  # класс постов
     article = 'AR'
 
     TYPE_CHOICE = [
-        (news, 'Новость'),
-        (article, 'Статья'),
+        (news, 'news'),
+        (article, 'article'),
     ]
 
     type_post = models.CharField(max_length=2, choices=TYPE_CHOICE, default=news)  # тип поста
@@ -74,6 +75,9 @@ class Post(models.Model):  # класс постов
 
     def __str__(self):
         return f'{self.title.title()}: {self.preview()}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):  # промежуточный класс для реализации связи многие ко многим

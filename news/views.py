@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from datetime import datetime
 from django.views.generic import (
-    ListView, DetailView, CreateView, UpdateView, DeleteView
+    ListView, DetailView, CreateView, UpdateView, DeleteView,
 )
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
+
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 # Список всех постов
@@ -38,15 +40,17 @@ class PostDetail(DetailView):
     context_object_name = 'post'  # имя списка, по которому будет обращение из html-шаблона
 
 
-# Представление для создания поста
-class PostCreate(CreateView):
+# Представление для создания поста с проверкой прав
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-# Представление для изменения поста (форма и шаблон как для создания поста)
-class PostEdit(UpdateView):
+# Представление для изменения поста с проверкой прав (форма и шаблон как для создания поста)
+class PostEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'

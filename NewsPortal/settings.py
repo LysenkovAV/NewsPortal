@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'news',
+    # 'news.apps.NewsConfig',
     'django_filters',
 
     'protect',
@@ -161,7 +162,139 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 # Чтобы allauth распознал кастомизированную форму вместо формы по умолчанию
 ACCOUNT_FORMS = {'signup': 'protect.forms.BasicSignupForm'}
+
+# Для отправки писем пользователям
+EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты
+EMAIL_PORT = 465  # порт smtp сервера
+EMAIL_HOST_USER = ''  # ваше имя пользователя, с почты которого посылаются письма
+EMAIL_HOST_PASSWORD = ''  # пароль от почты
+EMAIL_USE_SSL = True  # Яндекс использует ssl, использовать обязательно
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # отправка писем в терминал для теситрования
+
+DEFAULT_FROM_EMAIL = ''
+
+DAILY_POST_LIMIT = 3  # лимит на количество постов в день
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # предустановленные настройки логирования Джанго не отключаются
+    'style': '{',
+    'loggers': {
+        'console_debug': {
+            'handlers': ['console_debug'],
+            'propagate': True,
+        },
+        'console_warning': {
+            'handlers': ['console_warning'],
+            'propagate': True,
+        },
+        'console_error': {
+            'handlers': ['console_error_critical'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db_backends': {
+            'handlers': ['errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['security_file'],
+            'level': 'WARNING',
+            'propagate': False,
+        }
+    },
+
+    'handlers': {
+        'console_debug': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_debug_format',
+            'filters': ['require_debug_true'],
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_warning_format',
+        },
+        'console_error_critical': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_error_critical_format',
+        },
+        'general_file': {
+            'class': "logging.FileHandler",
+            'filename': "general.log",
+            'level': "INFO",
+            'filters': ['require_debug_false'],
+            'formatter': 'general_log_format',
+        },
+        'errors_file': {
+            'class': "logging.FileHandler",
+            'filename': "errors.log",
+            'level': "ERROR",
+            'formatter': 'console_error_critical_format',
+        },
+        'security_file': {
+            'class': "logging.FileHandler",
+            'filename': "security.log",
+            'level': "WARNING",
+            'formatter': 'security_format',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['require_debug_false'],
+            'formatter': 'mail_format',
+        },
+    },
+
+    'formatters': {
+        'console_debug_format': {
+            'format': '%(asctime)s -- %(levelname)s -- %(message)s'
+        },
+        'console_warning_format': {
+            'format': '%(asctime)s -- %(levelname)s -- %(message)s -- %(pathname)s'
+        },
+        'console_error_critical_format': {
+            'format': '%(asctime)s -- %(levelname)s -- %(message)s -- %(pathname)s -- %(exc_info)s'
+        },
+        'general_log_format': {
+            'format': '%(asctime)s -- %(levelname)s -- %(module)s -- %(message)s'
+        },
+        'mail_format': {
+            'format': '%(asctime)s -- %(levelname)s -- %(message)s -- %(pathname)s'
+        },
+        'security_format': {
+            'format': '%(asctime)s -- %(levelname)s -- %(module)s -- %(message)s'
+        },
+    },
+
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',  # обработка при DEBUG = True в settings.py
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',  # обработка при DEBUG = False в settings.py
+        },
+    },
+}

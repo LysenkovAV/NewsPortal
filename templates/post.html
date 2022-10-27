@@ -16,4 +16,66 @@ Post
     <h3>Date of publication: {{ post.time_add|date:'d M Y' }}</h3>
     <hr>
     <h3>{{ post.text|censor }}</h3>
+    <hr>
+    {% for category in post.categories.all %}
+        <!-- Пока не придумал как можно подписываться/отписываться сразу на несколько категорий,
+        поэтому просто перебор всех вариантов -->
+        {% if category.id == 1 %}
+            {% if finance %} <!-- если пользователь подписан на категорию, то предлагаем отписаться -->
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %} <!-- если пользователь неп подписан на категорию, то предлагаем подписаться -->
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 2 %}
+            {% if sport %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 3 %}
+            {% if science %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 4 %}
+            {% if education %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 5 %}
+            {% if IT %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 6 %}
+            {% if history %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 7 %}
+            {% if lifestyle %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+        {% if category.id == 8 %}
+            {% if travel %}
+                <h6><button><a href="unsubscribe/{{ category.id }}/">Unsubcribe from <b>{{ category.name }}</b></a></button><br></h6>
+            {% else %}
+                <h6><button><a href="subscribe/{{ category.id }}/">Subcribe to <b>{{ category.name }}</b></a></button><br></h6>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
 {% endblock content %}

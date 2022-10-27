@@ -1,0 +1,11 @@
+2022-10-27 16:59:26,449 -- INFO -- autoreload -- Watching for file changes with StatReloader
+2022-10-27 16:59:35,568 -- INFO -- basehttp -- "GET /news/ HTTP/1.1" 200 7664
+2022-10-27 16:59:51,501 -- WARNING -- log -- Not Found: /newsq/
+2022-10-27 16:59:51,501 -- WARNING -- basehttp -- "GET /newsq/ HTTP/1.1" 404 2932
+2022-10-27 17:56:22,626 -- INFO -- autoreload -- Watching for file changes with StatReloader
+2022-10-27 17:56:29,616 -- WARNING -- log -- Not Found: /news/1
+2022-10-27 17:56:29,617 -- WARNING -- basehttp -- "GET /news/1 HTTP/1.1" 404 3231
+2022-10-27 21:10:27,263 -- WARNING -- views -- TEST WARNING MESSAGE
+2022-10-27 21:12:53,029 -- WARNING -- views -- TEST WARNING MESSAGE
+2022-10-27 21:12:55,294 -- WARNING -- views -- TEST WARNING MESSAGE
+2022-10-27 21:13:03,746 -- WARNING -- views -- TEST WARNING MESSAGE

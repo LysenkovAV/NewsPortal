@@ -40,6 +40,7 @@ class Author(models.Model):  # класс авторов постов
 
 class Category(models.Model):  # класс категорий (тем) постов
     name = models.CharField(max_length=255, unique=True)  # название категории
+    subscribers = models.ManyToManyField(User, through='CategoryUser')  # связь многие ко многим с пользователями
 
     def __str__(self):
         return f'{self.name}'
@@ -72,7 +73,7 @@ class Post(models.Model):  # класс постов
         self.save()
 
     def preview(self):  # предпросмотр поста
-        return self.text[0:19] + '...'
+        return self.text[0:50] + '...'
 
     def __str__(self):
         return f'{self.title.title()}: {self.preview()}'
@@ -87,6 +88,14 @@ class PostCategory(models.Model):  # промежуточный класс дл�
 
     def __str__(self):
         return f'{self.post.preview()}: {self.category.name}'
+
+
+class CategoryUser(models.Model):  # промежуточный класс для реализации связи многие ко многим
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # связь один ко многим с пользователем
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)  # связь один ко многим с категорией
+
+    def __str__(self):
+        return f'{self.user.username}: {self.category.name}'
 
 
 class Comment(models.Model):  # класс комментариев к постам
